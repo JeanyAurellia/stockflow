@@ -2,9 +2,13 @@ package product
 
 import (
 	"context"
+	"errors"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+var ErrNotFound = errors.New("product not found")
 
 type Repository struct {
 	pool *pgxpool.Pool
@@ -51,6 +55,33 @@ func (repository *Repository) List(ctx context.Context) ([]Product, error) {
 	}
 
 	return products, rows.Err()
+}
+
+func (repository *Repository) Get(ctx context.Context, id string) (Product, error) {
+	query := `
+		SELECT id::text, category_id::text, name, description, sku, price, stock_quantity
+		FROM products
+		WHERE id = $1
+	`
+
+	product := Product{}
+	err := repository.pool.QueryRow(ctx, query, id).Scan(
+		&product.ID,
+		&product.CategoryID,
+		&product.Name,
+		&product.Description,
+		&product.Sku,
+		&product.Price,
+		&product.Stock,
+	)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return Product{}, ErrNotFound
+	}
+	if err != nil {
+		return Product{}, err
+	}
+
+	return product, nil
 }
 
 func (repository *Repository) Create(

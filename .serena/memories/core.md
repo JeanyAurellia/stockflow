@@ -1,0 +1,3 @@
+- Repository root has one Go backend module in `backend/` and Docker Compose at root.
+- HTTP routes are registered in `backend/cmd/api/main.go`.
+- Read `mem:backend/core` for feature packages and request flow.

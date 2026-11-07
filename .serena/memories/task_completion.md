@@ -1,0 +1,2 @@
+- For backend changes: run `gofmt -w` on changed Go files and `go test ./...` from `backend/`.
+- For route/auth changes, also confirm the intended middleware is attached at the registration site in `cmd/api/main.go`.

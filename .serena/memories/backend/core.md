@@ -1,0 +1,5 @@
+- API entry: `cmd/api/main.go`; domain packages live under `internal/`.
+- Data access uses pgx pool; each domain owns model, handler, repository.
+- Order creation uses a DB transaction to create items, update stock, and write inventory movements.
+- Auth middleware reads Bearer JWT claims; admin routes compose RequireAuth + RequireRole.
+- Read `mem:tech_stack` for versions and `mem:suggested_commands` for local workflow.

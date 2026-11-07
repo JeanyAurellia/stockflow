@@ -1,0 +1,4 @@
+- Keep feature code in its existing `internal/<domain>` package with Handler -> Repository dependency.
+- Route access is expressed in `cmd/api/main.go` with chi middleware composition.
+- JSON handlers set Content-Type; errors use `http.Error`.
+- Format Go changes with gofmt before tests.

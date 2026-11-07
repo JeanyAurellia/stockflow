@@ -2,8 +2,11 @@ package product
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type Handler struct {
@@ -25,6 +28,23 @@ func (handler *Handler) List(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(products)
+}
+
+func (handler *Handler) Get(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	product, err := handler.repository.Get(r.Context(), id)
+	if errors.Is(err, ErrNotFound) {
+		http.Error(w, "product not found", http.StatusNotFound)
+		return
+	}
+	if err != nil {
+		http.Error(w, "failed to get product", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(product)
 }
 
 func (handler *Handler) Create(w http.ResponseWriter, r *http.Request) {

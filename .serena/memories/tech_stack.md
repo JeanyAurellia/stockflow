@@ -1,0 +1,3 @@
+- Go module: `github.com/JeanyAurellia/stockflow/backend`, Go 1.27.
+- Router: chi/v5; PostgreSQL access: pgx/v5; JWT: golang-jwt/jwt/v5; dotenv: godotenv.
+- PostgreSQL runs through root `compose.yml`; migrations use golang-migrate from backend Makefile.

@@ -73,6 +73,7 @@ func main() {
 	productHandler := product.NewHandler(productRepository)
 
 	router.Get("/products", productHandler.List)
+	router.Get("/products/{id}", productHandler.Get)
 	router.With(
 		auth.RequireAuth(jwtSecret),
 		auth.RequireRole("admin"),
@@ -98,7 +99,9 @@ func main() {
 	orderRepository := order.NewRepository(pool)
 	orderHandler := order.NewHandler(orderRepository)
 
-	router.Get("/orders", orderHandler.List)
+	router.With(
+		auth.RequireAuth(jwtSecret),
+	).Get("/orders", orderHandler.List)
 	router.With(
 		auth.RequireAuth(jwtSecret),
 	).Post("/orders", orderHandler.Create)

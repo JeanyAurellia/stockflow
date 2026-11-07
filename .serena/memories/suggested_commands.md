@@ -1,0 +1,3 @@
+- From `backend/`: `go run ./cmd/api`, `go test ./...`, `gofmt -w cmd internal`.
+- From `backend/`: `make migrate-up`, `make migrate-down`, `make migrate-version` (loads `.env`).
+- From repository root: `docker compose up -d`; use `docker compose exec postgres psql -U inventory_user -d inventory_db` for database inspection.
