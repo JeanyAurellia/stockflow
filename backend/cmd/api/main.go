@@ -15,6 +15,7 @@ import (
 	"github.com/JeanyAurellia/stockflow/backend/internal/category"
 	"github.com/JeanyAurellia/stockflow/backend/internal/database"
 	"github.com/JeanyAurellia/stockflow/backend/internal/inventory"
+	"github.com/JeanyAurellia/stockflow/backend/internal/middleware"
 	"github.com/JeanyAurellia/stockflow/backend/internal/orders"
 	"github.com/JeanyAurellia/stockflow/backend/internal/product"
 	"github.com/JeanyAurellia/stockflow/backend/internal/user"
@@ -57,6 +58,7 @@ func main() {
 
 	// Membuat router: bagian yang menentukan URL mana menjalankan fungsi apa.
 	router := chi.NewRouter()
+	router.Use(middleware.CORS)
 	// Saat seseorang membuka GET /health, jalankan fungsi healthCheck.
 	router.Get("/health", healthCheck)
 
