@@ -11,9 +11,11 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 
+	"github.com/JeanyAurellia/stockflow/backend/internal/auth"
 	"github.com/JeanyAurellia/stockflow/backend/internal/category"
 	"github.com/JeanyAurellia/stockflow/backend/internal/database"
 	"github.com/JeanyAurellia/stockflow/backend/internal/inventory"
+	"github.com/JeanyAurellia/stockflow/backend/internal/orders"
 	"github.com/JeanyAurellia/stockflow/backend/internal/product"
 	"github.com/JeanyAurellia/stockflow/backend/internal/user"
 )
@@ -48,6 +50,11 @@ func main() {
 	// Menyimpan koneksi agar fungsi healthCheck dapat memakainya nanti.
 	databasePool = pool
 
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		log.Fatal("JWT_SECRET is required")
+	}
+
 	// Membuat router: bagian yang menentukan URL mana menjalankan fungsi apa.
 	router := chi.NewRouter()
 	// Saat seseorang membuka GET /health, jalankan fungsi healthCheck.
@@ -57,31 +64,44 @@ func main() {
 	categoryHandler := category.NewHandler(categoryRepository)
 
 	router.Get("/categories", categoryHandler.List)
-	router.Post("/categories", categoryHandler.Create)
+	router.With(
+		auth.RequireAuth(jwtSecret),
+		auth.RequireRole("admin"),
+	).Post("/categories", categoryHandler.Create)
 
 	productRepository := product.NewRepository(pool)
 	productHandler := product.NewHandler(productRepository)
 
 	router.Get("/products", productHandler.List)
-	router.Post("/products", productHandler.Create)
+	router.With(
+		auth.RequireAuth(jwtSecret),
+		auth.RequireRole("admin"),
+	).Post("/products", productHandler.Create)
 
 	inventoryRepository := inventory.NewRepository(pool)
 	inventoryHandler := inventory.NewHandler(inventoryRepository)
 
 	router.Get("/products/{id}/inventory", inventoryHandler.List)
-	router.Post("/products/{id}/inventory", inventoryHandler.Create)
+	router.With(
+		auth.RequireAuth(jwtSecret),
+		auth.RequireRole("admin"),
+	).Post("/products/{id}/inventory", inventoryHandler.Create)
 
 	userRepository := user.NewRepository(pool)
 	userService := user.NewService(userRepository)
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		log.Fatal("JWT_SECRET is required")
-	}
 
 	userHandler := user.NewHandler(userService, jwtSecret)
 
 	router.Post("/register", userHandler.Register)
 	router.Post("/login", userHandler.Login)
+
+	orderRepository := order.NewRepository(pool)
+	orderHandler := order.NewHandler(orderRepository)
+
+	router.Get("/orders", orderHandler.List)
+	router.With(
+		auth.RequireAuth(jwtSecret),
+	).Post("/orders", orderHandler.Create)
 
 	// Mengambil port dari .env, misalnya APP_PORT=8080.
 	port := os.Getenv("APP_PORT")
