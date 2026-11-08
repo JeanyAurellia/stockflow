@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router"
 
+import { DashboardLayout } from "../app/DashboardLayout"
 import { getOrders } from "../features/orders/api"
 import type { Order } from "../features/orders/types"
 
@@ -36,16 +37,16 @@ export function OrdersPage() {
 	}, [])
 
 	if (isLoading) {
-		return <main className="px-6 py-8 sm:px-10 sm:py-12"><p className="text-sm text-[#5e665f]">Memuat pesanan...</p></main>
+		return <DashboardLayout><main className="px-6 py-8 sm:px-10 sm:py-12"><p className="text-sm text-[#5e665f]">Memuat pesanan...</p></main></DashboardLayout>
 	}
 
 	if (error) {
-		return <main className="px-6 py-8 sm:px-10 sm:py-12"><p className="text-sm text-[#9d3328]">{error}</p></main>
+		return <DashboardLayout><main className="px-6 py-8 sm:px-10 sm:py-12"><p className="text-sm text-[#9d3328]">{error}</p></main></DashboardLayout>
 	}
 
 	if (orders.length === 0) {
 		return (
-			<main className="px-6 py-8 sm:px-10 sm:py-12">
+			<DashboardLayout><main className="px-6 py-8 sm:px-10 sm:py-12">
 				<div className="flex flex-wrap items-end justify-between gap-4">
 					<div>
 				<p className="font-mono text-xs font-bold tracking-[0.12em] text-[#5a7261]">PESANAN</p>
@@ -54,12 +55,12 @@ export function OrdersPage() {
 					</div>
 					<Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>
 				</div>
-			</main>
+			</main></DashboardLayout>
 		)
 	}
 
 	return (
-		<main className="px-6 py-8 sm:px-10 sm:py-12">
+		<DashboardLayout><main className="px-6 py-8 sm:px-10 sm:py-12">
 			<div className="flex flex-wrap items-end justify-between gap-4">
 				<div>
 					<p className="font-mono text-xs font-bold tracking-[0.12em] text-[#5a7261]">PESANAN</p>
@@ -89,6 +90,6 @@ export function OrdersPage() {
 					</article>
 				))}
 			</div>
-		</main>
+		</main></DashboardLayout>
 	)
 }
