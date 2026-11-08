@@ -58,7 +58,7 @@ export function CreateOrderPage() {
 			return
 		}
 
-		if (quantity > product.stock) {
+		if (quantity > product.stock_quantity) {
 			setError("Jumlah pesanan melebihi stok yang tersedia.")
 			return
 		}
@@ -69,7 +69,7 @@ export function CreateOrderPage() {
 			if (!existing) return [...current, { productID: product.id, quantity }]
 
 			const nextQuantity = existing.quantity + quantity
-			if (nextQuantity > product.stock) {
+			if (nextQuantity > product.stock_quantity) {
 				setError("Jumlah pesanan melebihi stok yang tersedia.")
 				return current
 			}
@@ -123,7 +123,7 @@ export function CreateOrderPage() {
 							<label className="grid gap-1.5 text-sm font-semibold text-[#303631]">Produk
 								<select value={selectedProductID} onChange={(event) => setSelectedProductID(event.target.value)} disabled={isLoading} className="rounded-md border border-[#cbd2cc] bg-white px-3 py-2.5 font-normal outline-none focus:border-[#3b8159]">
 									<option value="">Pilih produk</option>
-									{products.filter((product) => product.stock > 0).map((product) => <option key={product.id} value={product.id}>{product.name} — {rupiah.format(product.price)}</option>)}
+									{products.filter((product) => product.stock_quantity > 0).map((product) => <option key={product.id} value={product.id}>{product.name} — {rupiah.format(product.price)}</option>)}
 								</select>
 							</label>
 							<label className="grid gap-1.5 text-sm font-semibold text-[#303631]">Jumlah
