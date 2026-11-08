@@ -1,13 +1,14 @@
 import type { PropsWithChildren } from "react"
 import { NavLink, useNavigate } from "react-router"
 
-import { removeAccessToken } from "../features/auth/authStorage"
+import { getCurrentUser, removeAccessToken } from "../features/auth/authStorage"
 
 const linkClassName = ({ isActive }: { isActive: boolean }) =>
 	`rounded-md px-3 py-2 text-sm ${isActive ? "bg-white/12 font-bold text-white" : "text-[#c4dccb] hover:bg-white/8 hover:text-white"}`
 
 export function DashboardLayout({ children }: PropsWithChildren) {
 	const navigate = useNavigate()
+	const currentUser = getCurrentUser()
 
 	function handleLogout() {
 		removeAccessToken()
@@ -26,7 +27,7 @@ export function DashboardLayout({ children }: PropsWithChildren) {
 					<NavLink to="/dashboard" className={linkClassName}>Dashboard</NavLink>
 					<NavLink to="/products" className={linkClassName}>Produk</NavLink>
 					<NavLink to="/orders" className={linkClassName}>Pesanan</NavLink>
-					<NavLink to="/admin/catalog" className={linkClassName}>Kelola katalog</NavLink>
+					{currentUser?.role === "admin" && <NavLink to="/admin/catalog" className={linkClassName}>Kelola katalog</NavLink>}
 					<span className="rounded-md px-3 py-2 text-sm text-[#c4dccb]/60">Persediaan</span>
 				</nav>
 

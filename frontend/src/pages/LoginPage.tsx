@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react"
 import { useNavigate } from "react-router"
 
 import { login } from "../features/auth/api"
-import { saveAccessToken } from "../features/auth/authStorage"
+import { saveAccessToken, saveCurrentUser } from "../features/auth/authStorage"
 import { ApiError } from "../lib/apiClient"
 
 export function LoginPage() {
@@ -21,6 +21,7 @@ export function LoginPage() {
 		try {
 			const response = await login({ email, password })
 			saveAccessToken(response.access_token)
+			saveCurrentUser(response.user)
 			navigate("/dashboard", { replace: true })
 		} catch (error) {
 			if (error instanceof ApiError && error.status === 401) {

@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react"
 import { Navigate, Route, Routes } from "react-router"
 
-import { getAccessToken } from "../features/auth/authStorage"
+import { getAccessToken, getCurrentUser } from "../features/auth/authStorage"
 import { DashboardPage } from "../pages/DashboardPage"
 import { AdminCatalogPage } from "../pages/AdminCatalogPage"
 import { CreateOrderPage } from "../pages/CreateOrderPage"
@@ -18,6 +18,14 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 	return children
 }
 
+function AdminRoute({ children }: PropsWithChildren) {
+	if (getCurrentUser()?.role !== "admin") {
+		return <Navigate to="/dashboard" replace />
+	}
+
+	return children
+}
+
 export default function App() {
 	return (
 		<Routes>
@@ -27,7 +35,7 @@ export default function App() {
 			<Route path="/products/:id" element={<ProtectedRoute><ProductDetailPage /></ProtectedRoute>} />
 			<Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
 			<Route path="/orders/new" element={<ProtectedRoute><CreateOrderPage /></ProtectedRoute>} />
-			<Route path="/admin/catalog" element={<ProtectedRoute><AdminCatalogPage /></ProtectedRoute>} />
+			<Route path="/admin/catalog" element={<ProtectedRoute><AdminRoute><AdminCatalogPage /></AdminRoute></ProtectedRoute>} />
 			<Route path="*" element={<Navigate to="/dashboard" replace />} />
 		</Routes>
 	)
