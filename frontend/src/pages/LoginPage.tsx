@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react"
+import { useNavigate } from "react-router"
 
 import { login } from "../features/auth/api"
 import { saveAccessToken } from "../features/auth/authStorage"
@@ -10,7 +11,7 @@ export function LoginPage() {
 	const [showPassword, setShowPassword] = useState(false)
 	const [error, setError] = useState("")
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const [isLoggedIn, setIsLoggedIn] = useState(false)
+	const navigate = useNavigate()
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault()
@@ -20,7 +21,7 @@ export function LoginPage() {
 		try {
 			const response = await login({ email, password })
 			saveAccessToken(response.access_token)
-			setIsLoggedIn(true)
+			navigate("/dashboard", { replace: true })
 		} catch (error) {
 			if (error instanceof ApiError && error.status === 401) {
 				setError("Email atau password salah. Periksa lalu coba lagi.")
@@ -100,8 +101,6 @@ export function LoginPage() {
 						</div>
 
 						{error && <p className="text-sm leading-snug text-[#9d3328]">{error}</p>}
-						{isLoggedIn && <p className="text-sm leading-snug text-[#276541]">Kamu sudah masuk.</p>}
-
 						<button type="submit" disabled={isSubmitting} className="mt-1 min-h-11 rounded-md border border-[#1f5738] bg-[#3b8159] px-4 text-sm font-bold text-white shadow-sm shadow-[#1f5738]/30 hover:bg-[#2c6c49] focus:outline-none focus:ring-2 focus:ring-[#3c8058] focus:ring-offset-2 disabled:cursor-wait disabled:opacity-65">
 							{isSubmitting ? "Memeriksa akun..." : "Masuk"}
 						</button>
