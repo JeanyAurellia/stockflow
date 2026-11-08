@@ -17,3 +17,10 @@ export type Order = {
 	created_at: string
 	items: OrderItem[]
 }
+
+export type CreateOrderRequest = {
+	items: Array<{
+		product_id: string
+		quantity: number
+	}>
+}
