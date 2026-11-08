@@ -26,6 +26,7 @@ export function DashboardLayout({ children }: PropsWithChildren) {
 					<NavLink to="/dashboard" className={linkClassName}>Dashboard</NavLink>
 					<NavLink to="/products" className={linkClassName}>Produk</NavLink>
 					<NavLink to="/orders" className={linkClassName}>Pesanan</NavLink>
+					<NavLink to="/admin/catalog" className={linkClassName}>Kelola katalog</NavLink>
 					<span className="rounded-md px-3 py-2 text-sm text-[#c4dccb]/60">Persediaan</span>
 				</nav>
 

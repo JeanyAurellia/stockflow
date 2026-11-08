@@ -14,7 +14,6 @@ export function listProducts(): Promise<Product[]> {
 	return apiClient<Product[]>("/products")
 }
 
-<<<<<<< HEAD
 export function createProduct(input: CreateProductInput): Promise<Product> {
 	return apiClient<Product>("/products", {
 		method: "POST",

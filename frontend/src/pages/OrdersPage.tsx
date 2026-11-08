@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router"
 
 import { getOrders } from "../features/orders/api"
 import type { Order } from "../features/orders/types"
@@ -47,18 +48,28 @@ export function OrdersPage() {
 	if (orders.length === 0) {
 		return (
 			<main className="px-6 py-8 sm:px-10 sm:py-12">
+				<div className="flex flex-wrap items-end justify-between gap-4">
+					<div>
 				<p className="font-mono text-xs font-bold tracking-[0.12em] text-[#5a7261]">PESANAN</p>
 				<h1 className="mt-3 text-4xl font-bold tracking-[-0.05em] text-[#161a17]">Belum ada pesanan</h1>
 				<p className="mt-3 max-w-md text-[#5e665f]">Pesanan baru akan muncul di sini setelah dibuat.</p>
+					</div>
+					<Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>
+				</div>
 			</main>
 		)
 	}
 
 	return (
 		<main className="px-6 py-8 sm:px-10 sm:py-12">
-			<p className="font-mono text-xs font-bold tracking-[0.12em] text-[#5a7261]">PESANAN</p>
-			<h1 className="mt-3 text-4xl font-bold tracking-[-0.05em] text-[#161a17]">Daftar pesanan</h1>
-			<p className="mt-3 text-[#5e665f]">{orders.length} pesanan tercatat.</p>
+			<div className="flex flex-wrap items-end justify-between gap-4">
+				<div>
+					<p className="font-mono text-xs font-bold tracking-[0.12em] text-[#5a7261]">PESANAN</p>
+					<h1 className="mt-3 text-4xl font-bold tracking-[-0.05em] text-[#161a17]">Daftar pesanan</h1>
+					<p className="mt-3 text-[#5e665f]">{orders.length} pesanan tercatat.</p>
+				</div>
+				<Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>
+			</div>
 
 			<div className="mt-8 overflow-hidden rounded-lg border border-[#d9ded9] bg-white">
 				<div className="hidden grid-cols-[1.2fr_1fr_1.5fr_1fr] gap-4 border-b border-[#d9ded9] px-5 py-3 font-mono text-xs font-bold tracking-[0.08em] text-[#5a7261] md:grid">
