@@ -71,7 +71,7 @@ export function ProductsPage() {
 							</thead>
 							<tbody>
 								{products.map((product) => {
-									const stock = stockLabel(product.stock)
+									const stock = stockLabel(product.stock_quantity)
 
 									return (
 										<tr key={product.id} className="border-b border-[#edf0ed] last:border-b-0">

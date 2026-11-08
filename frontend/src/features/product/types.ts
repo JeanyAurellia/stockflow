@@ -5,5 +5,5 @@ export type Product = {
 	description: string
 	sku: string
 	price: number
-	stock: number
+	stock_quantity: number
 }
