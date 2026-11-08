@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router"
 
 import { DashboardLayout } from "../app/DashboardLayout"
+import { getCurrentUser } from "../features/auth/authStorage"
 import { getOrders } from "../features/orders/api"
 import type { Order } from "../features/orders/types"
 
@@ -16,6 +17,7 @@ const dateFormat = new Intl.DateTimeFormat("id-ID", {
 })
 
 export function OrdersPage() {
+	const isAdmin = getCurrentUser()?.role === "admin"
 	const [orders, setOrders] = useState<Order[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState("")
@@ -53,7 +55,7 @@ export function OrdersPage() {
 				<h1 className="mt-3 text-4xl font-bold tracking-[-0.05em] text-[#161a17]">Belum ada pesanan</h1>
 				<p className="mt-3 max-w-md text-[#5e665f]">Pesanan baru akan muncul di sini setelah dibuat.</p>
 					</div>
-					<Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>
+					{!isAdmin && <Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>}
 				</div>
 			</main></DashboardLayout>
 		)
@@ -67,7 +69,7 @@ export function OrdersPage() {
 					<h1 className="mt-3 text-4xl font-bold tracking-[-0.05em] text-[#161a17]">Daftar pesanan</h1>
 					<p className="mt-3 text-[#5e665f]">{orders.length} pesanan tercatat.</p>
 				</div>
-				<Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>
+				{!isAdmin && <Link to="/orders/new" className="rounded-md bg-[#276541] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#205536]">Buat pesanan</Link>}
 			</div>
 
 			<div className="mt-8 overflow-hidden rounded-lg border border-[#d9ded9] bg-white">

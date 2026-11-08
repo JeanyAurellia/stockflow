@@ -26,6 +26,14 @@ function AdminRoute({ children }: PropsWithChildren) {
 	return children
 }
 
+function CustomerRoute({ children }: PropsWithChildren) {
+	if (getCurrentUser()?.role !== "customer") {
+		return <Navigate to="/dashboard" replace />
+	}
+
+	return children
+}
+
 export default function App() {
 	return (
 		<Routes>
@@ -34,7 +42,7 @@ export default function App() {
 			<Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
 			<Route path="/products/:id" element={<ProtectedRoute><ProductDetailPage /></ProtectedRoute>} />
 			<Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
-			<Route path="/orders/new" element={<ProtectedRoute><CreateOrderPage /></ProtectedRoute>} />
+			<Route path="/orders/new" element={<ProtectedRoute><CustomerRoute><CreateOrderPage /></CustomerRoute></ProtectedRoute>} />
 			<Route path="/admin/catalog" element={<ProtectedRoute><AdminRoute><AdminCatalogPage /></AdminRoute></ProtectedRoute>} />
 			<Route path="*" element={<Navigate to="/dashboard" replace />} />
 		</Routes>
