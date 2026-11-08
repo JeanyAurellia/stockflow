@@ -25,7 +25,7 @@ export function DashboardLayout({ children }: PropsWithChildren) {
 				<nav className="mt-12 grid gap-1" aria-label="Menu utama">
 					<NavLink to="/dashboard" className={linkClassName}>Dashboard</NavLink>
 					<NavLink to="/products" className={linkClassName}>Produk</NavLink>
-					<span className="rounded-md px-3 py-2 text-sm text-[#c4dccb]/60">Pesanan</span>
+					<NavLink to="/orders" className={linkClassName}>Pesanan</NavLink>
 					<span className="rounded-md px-3 py-2 text-sm text-[#c4dccb]/60">Persediaan</span>
 				</nav>
 
