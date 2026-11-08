@@ -12,8 +12,6 @@ const rupiah = new Intl.NumberFormat("id-ID", {
 
 const dateFormat = new Intl.DateTimeFormat("id-ID", {
 	dateStyle: "medium",
-	month: "short",
-	year: "numeric",
 })
 
 export function OrdersPage() {
