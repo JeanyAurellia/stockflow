@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router"
 
 import { DashboardLayout } from "../app/DashboardLayout"
 import { listProducts } from "../features/product/api"
@@ -76,7 +77,7 @@ export function ProductsPage() {
 									return (
 										<tr key={product.id} className="border-b border-[#edf0ed] last:border-b-0">
 											<td className="px-5 py-4">
-												<p className="font-bold text-[#161a17]">{product.name}</p>
+												<Link to={`/products/${product.id}`} className="font-bold text-[#161a17] hover:text-[#276541] hover:underline focus:outline-none focus:ring-2 focus:ring-[#3b8159]">{product.name}</Link>
 												{product.description && <p className="mt-1 max-w-xs text-sm text-[#5e665f]">{product.description}</p>}
 											</td>
 											<td className="px-5 py-4 font-mono text-xs text-[#5e665f]">{product.sku}</td>
